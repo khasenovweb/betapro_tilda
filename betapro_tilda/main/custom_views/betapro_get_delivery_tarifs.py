@@ -21,7 +21,6 @@ def betapro_get_delivery_tarifs(request):
             weight="{weight}" 
             sum_nalog="2139" 
             addr="{addr}" 
-            zip="664020" 
             version="1"
         />
     </request>
