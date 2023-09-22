@@ -12,16 +12,19 @@ def betapro_get_delivery_tarifs(request):
     # addr = "г Челябинск ул Александра Шмакова 17А"
     addr = request.GET.get('addr')
     weight = request.GET.get('weight') #0.221
+    zip = request.GET.get('zip')
+    summ = request.GET.get('summ')
 
     xml = f"""
     <request request_type="54" partner_id="201" password="test">
         <parcel 
-            sum_vl="2139" 
+            sum_vl="{summ}" 
             volume="0.0006684" 
             weight="{weight}" 
-            sum_nalog="2139" 
+            sum_nalog="{summ}" 
             addr="{addr}" 
             version="1"
+            zip="{zip}"
         />
     </request>
     """.encode()
@@ -43,7 +46,10 @@ def betapro_get_delivery_tarifs(request):
         tariff = el.get('tariff')
         tariff_round = round(float(el.get('tariff')))
         days = el.get('days')
-        days_text = plural_days(int(days.split('-')[-1]))
+        try:
+            days_text = plural_days(int( days.split('-')[-1] ))
+        except:
+            days_text = 'дней'
         sd_all_json.append({
             'sd_name': sd_name,
             'tariff_name': tariff_name,
